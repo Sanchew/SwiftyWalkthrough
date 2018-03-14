@@ -26,7 +26,7 @@ private let defaultDimColor = UIColor.black.withAlphaComponent(0.7).cgColor
     
     open weak var delegate: WalkthroughViewDelegate?
     
-    lazy var overlayView: UIView = self.makeOverlay()
+    public lazy var overlayView: UIView = self.makeOverlay()
     
     override public init(frame: CGRect) {
         super.init(frame: frame)

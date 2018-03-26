@@ -125,7 +125,7 @@ private let defaultDimColor = UIColor.black.withAlphaComponent(0.7).cgColor
         setNeedsDisplay()
     }
     
-    func removeOverlaySublayers() {
+    open func removeOverlaySublayers() {
         guard let overlaySublayers = overlayView.layer.sublayers else { return }
         
         overlaySublayers.forEach { $0.removeFromSuperlayer() }

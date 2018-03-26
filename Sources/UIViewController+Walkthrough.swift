@@ -24,12 +24,12 @@ extension UIViewController: WalkthroughViewDelegate {
         return v
     }
     
-    public func startWalkthrough(_ walkthroughView: WalkthroughView) {
+    public func startWalkthrough(_ walkthroughView: WalkthroughView, in container: UIView? = UIApplication.shared.keyWindow) {
         if ongoingWalkthrough {
             finishWalkthrough()
         }
         
-        guard let window = UIApplication.shared.keyWindow else { return }
+        guard let window = container else { return }
         
         walkthroughView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -45,15 +45,31 @@ extension UIViewController: WalkthroughViewDelegate {
     
     public func attachToWalkthrough() -> WalkthroughView? {
         guard let window = UIApplication.shared.keyWindow else { return .none }
-        
-        for rootSubview in window.subviews {
-            if let walkthrough = rootSubview as? WalkthroughView {
-                walkthrough.delegate = self
-                return walkthrough
+        func attach(view: UIView) -> WalkthroughView? {
+            for rootSubview in view.subviews {
+                if let walkthrough = rootSubview as? WalkthroughView {
+                    return walkthrough
+                }
             }
+            for rootSubview in view.subviews {
+                if let walkthrough = attach(view: rootSubview) {
+                    return walkthrough
+                }
+            }
+            return nil
         }
         
-        return .none
+        return attach(view: window)
+        
+//        for rootSubview in window.subviews {
+//            if let walkthrough = rootSubview as? WalkthroughView {
+//                walkthrough.delegate = self
+//                return walkthrough
+//            }
+//        }
+//
+//
+//        return .none
     }
     
     public func finishWalkthrough() {
